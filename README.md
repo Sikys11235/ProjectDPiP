@@ -17,7 +17,7 @@ To start this project, I recommend using the `yfinance` package, as it simplifie
 
 # steps
 1. Install the `yfinance` package:
-
+(Maybe use API to show we know h2API)
 2. Import the required libraries:
 
 3. Create a function to download historical stock data for a given ticker:
@@ -36,4 +36,3 @@ To start this project, I recommend using the `yfinance` package, as it simplifie
 
 10. Use the trained model to forecast future stock returns for the specified stock.
 
-This outline should give you a good starting point for your stock price prediction project. You can choose to modify or extend the project based on your requirements. If you have any questions or need assistance with any of the steps, please feel free to ask.
