@@ -17,10 +17,10 @@ To start this project, I recommend using the `yfinance` package, as it simplifie
 
 # steps
 1. Install the `yfinance` package:
-(Maybe use API to show we know h2API)
+
 2. Import the required libraries:
 
-3. Create a function to download historical stock data for a given ticker:
+3. Create a function to download historical stock data for a given ticker(s):
 
 4. Allow users to input a stock ticker and specify the date range:
 
@@ -32,7 +32,7 @@ To start this project, I recommend using the `yfinance` package, as it simplifie
 
 8. Evaluate the model performance on the testing set using appropriate metrics, such as Mean Absolute Error (MAE) or Mean Squared Error (MSE).
 
-9. Fine-tune the model's hyperparameters if needed, and retrain the model for better performance.
+9. Use the trained model to forecast future stock returns for the specified stock.
 
-10. Use the trained model to forecast future stock returns for the specified stock.
+10. Visualise our predictions.
 
