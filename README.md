@@ -9,7 +9,7 @@ Repository for our DPiP project
 
 
 #Purpose of this project
-Napadlo mě přidat něco jakože choose your stock (kdybychom jich měli víc) podle nějakých inputů (třeba volatilita, zhodnocení,...) a my bychom na konci řekli ok, vezmeme stock XY a vydělá se na tom XY podle našeho forecastu. Nebo aby tam byla nějaká přidaná hodnota, než jen ok tohle jsou stocks a tohle je jejich forecast. Fanda má něco podobného, že inputne počasí a jejich kód jim nabídne zdroj.
+Napadlo mě přidat něco jakože choose your stock (kdybychom jich měli víc) podle nějakých inputů (třeba volatilita, zhodnocení,...) a my bychom na konci řekli ok, vezmeme stock XY a vydělá se na tom XY podle našeho forecastu. Nebo aby tam byla nějaká přidaná hodnota, než jen ok tohle jsou stocks a tohle je jejich forecast (returns). 
 
 
 To start this project, I recommend using the `yfinance` package, as it simplifies the process of fetching data from Yahoo Finance. Here's an outline of the steps you can follow to build your stock price prediction project:
