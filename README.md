@@ -1,4 +1,15 @@
 
+Current to do's:
+- vytvořit soubor requirements.txt - všechny packages (Vojta)
+- vytvořit soubor config (to ale nevím co by mělo dělat)
+- přidat možnost aby šlo vybrat více stocks (Vojta)
+- User interface - vyskakovací okno, kde by se všechno navolilo (stock/s, datum start, datum konec, granularita??)
+- Něco ještě přidat?
+- Proof-read code, občas tam jsou defaultní názvy funkcí, vyhodit některé naše komentáře ##
+
+Fungování:
+User vybere datum, stock, sesbíráme data z yfinance pro ten rok a vyprodukujeme model (x kroků) a pak uděláme vizializaci
+
 
 Napadlo mě přidat něco jakože choose your stock (kdybychom jich měli víc) podle nějakých inputů (třeba volatilita, zhodnocení,...) a my bychom na konci řekli ok, vezmeme stock XY a vydělá se na tom XY podle našeho forecastu. Nebo aby tam byla nějaká přidaná hodnota, než jen ok tohle jsou stocks a tohle je jejich forecast (returns)
 
