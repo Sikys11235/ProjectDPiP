@@ -106,7 +106,7 @@ def calculate_daily_returns(stock_data):
     stock_data = stock_data.dropna()  # Remove rows with NaN values
     return stock_data
 
-# Function to calculate Simple Moving Average (SMA) and Exponential Moving Average (EMA)
+# Function to calculate Simple Moving Average (SMA) and Exponential Moving Average (EMA) - not sure if needed actually
 def calculate_sma_ema(stock_data, window):
     stock_data = stock_data.copy()  # Create a copy of the DataFrame to work on
     stock_data.loc[:, 'SMA'] = stock_data['Close'].rolling(window=window).mean()
@@ -124,7 +124,7 @@ def prepare_data(stock_data, num_days):
            
     return np.array(X), np.array(y)
 
-# Function to train and evaluate machine learning models
+# Function to train and evaluate machine learning models - add ARIMA?
 def train_and_evaluate_models(X_train, y_train, X_test, y_test):
     models = {
         'Linear Regression': LinearRegression(),
@@ -192,7 +192,7 @@ if __name__ == "__main__":
         print("Invalid number of days. Please enter a valid number.")
         exit()
 
-    start_date = "2010-01-01"
+    start_date = "2010-01-01"  # dynamic start date caused problems
 
     predicted_returns_dict = {}
 
