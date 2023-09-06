@@ -1,6 +1,7 @@
 
 *Read.me will be updated and cleaned during final submission*
 
+
 Current to do's:
 - vytvořit soubor requirements.txt - všechny packages (Vojta)
 - vytvořit soubor config ?
@@ -11,9 +12,11 @@ Current to do's:
 
 To start this project, I recommend using the yfinance package, as it simplifies the process of fetching data from Yahoo Finance. Here's an outline of the steps you can follow to build your stock price prediction project:
 
-1) requirements.txt contains all the packages necessary
+**1) requirements.txt contains all the packages necessary
 2) run_main.py is the script to be run
 3) other files are making sure run_main works properly
+4) run_main.ipynb was the original file, to be deleted upon final submission - same but does not contain parse interface
+5) DS and Project to be deleted upon submission, automatically created during push request**
 
 - Create a function to download historical stock data for a given ticker
 - Allow users to input a stock ticker and specify the date range:
