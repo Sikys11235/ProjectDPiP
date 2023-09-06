@@ -1,5 +1,5 @@
 
-*Read.me will be updaated and cleaned during final submission*
+*Read.me will be updated and cleaned during final submission*
 
 Current to do's:
 - vytvořit soubor requirements.txt - všechny packages (Vojta)
