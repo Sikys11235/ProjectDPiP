@@ -1,16 +1,20 @@
-#Requirements
+# Importing functions from another Python file
+from data_functions import fetch_stock_data, calculate_daily_returns, calculate_sma_ema, prepare_data, train_and_evaluate_models, visualize_predictions
 
+# Importing settings from config.ini
+import configparser
+
+config = configparser.ConfigParser()
+config.read('config.ini')
+
+# Requirements
 import yfinance as yf
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LinearRegression
-from sklearn.ensemble import RandomForestRegressor
-from statsmodels.tsa.arima.model import ARIMA
-from sklearn.metrics import mean_squared_error
 import matplotlib.pyplot as plt
-from pandas.tseries.offsets import BDay
 import argparse
+from configparser import ConfigParser
 
 #Popular stocks
 
@@ -69,116 +73,33 @@ If you want to see the complete list of stocks available with the description, u
 python run_main.py dummy --list-stocks --start-date dummy
 """
 
-parser = argparse.ArgumentParser(description=custom_help, formatter_class=argparse.RawDescriptionHelpFormatter)
-
-
-parser.add_argument('stocks', nargs='+', type=str, help='Required stock symbol(s)')
-parser.add_argument('--start-date', type=str, required=True, help='Start date for prediction (YYYY-MM-DD)')
-parser.add_argument('--num-days', type=int, default=5, help='Number of days to predict (default: 5) - doesnt display weekends')
-parser.add_argument('--list-stocks', action='store_true', help='List available stocks and exit')
-
-args = parser.parse_args()
-
-if args.list_stocks:
-    print("Available Stocks:")
-    for symbol, description in stock_info.items():
-        print(f"{symbol}: {description}")
-    exit(0)
-
-stock_symbols = args.stocks
-end_date = args.start_date
-num_days = args.num_days
-
-# Validate selected stocks
-for stock_symbol in stock_symbols:
-    if stock_symbol not in stock_info:
-        print(f"Invalid stock symbol: {stock_symbol}")
-        exit(1)
-
-# Function to fetch stock data
-def fetch_stock_data(stock_symbol, start_date, end_date):
-    stock_data = yf.download(stock_symbol, start=start_date, end=end_date)
-    return stock_data.dropna()
-
-# Function to calculate daily returns
-def calculate_daily_returns(stock_data):
-    stock_data['Daily_Return'] = stock_data['Adj Close'].pct_change()
-    stock_data = stock_data.dropna()  # Remove rows with NaN values
-    return stock_data
-
-# Function to calculate Simple Moving Average (SMA) and Exponential Moving Average (EMA) - not sure if needed actually
-def calculate_sma_ema(stock_data, window):
-    stock_data = stock_data.copy()  # Create a copy of the DataFrame to work on
-    stock_data.loc[:, 'SMA'] = stock_data['Close'].rolling(window=window).mean()
-    stock_data.loc[:, 'EMA'] = stock_data['Close'].ewm(span=window, adjust=False).mean()
-    return stock_data.dropna()
-
-# Function to prepare the data
-def prepare_data(stock_data, num_days):
-    X = []
-    y = []
-    
-    for i in range(len(stock_data) - num_days):
-        X.append(stock_data[['Daily_Return', 'SMA', 'EMA']].iloc[i:i+num_days].values.flatten())
-        y.append(stock_data['Daily_Return'].iloc[i+num_days])
-           
-    return np.array(X), np.array(y)
-
-# Function to train and evaluate machine learning models - add ARIMA?
-def train_and_evaluate_models(X_train, y_train, X_test, y_test):
-    models = {
-        'Linear Regression': LinearRegression(),
-        'Random Forest': RandomForestRegressor(),
-    }
-    
-    best_model = None
-    best_mse = float('inf')
-    
-    for name, model in models.items():
-        model.fit(X_train, y_train)
-        y_pred = model.predict(X_test)
-            
-        mse = mean_squared_error(y_test, y_pred)
-        
-        if mse < best_mse:
-            best_mse = mse
-            best_model = model
-            print(f"Best Model: {name}")
-    
-    print(f"Best MSE: {best_mse}")
-    
-    return best_model
-
-# Function to visualize predictions and daily returns
-def visualize_predictions(predicted_returns, date_labels, stock_symbol):
-    plt.style.use('dark_background')  # Set the style to dark background
-    fig, ax = plt.subplots(figsize=(12, 6))
-
-    # Create the bar plot
-    bars = ax.bar(date_labels, predicted_returns, label=f'{stock_symbol} Predicted Returns', color=np.random.rand(3,), edgecolor='grey')
-
-    # Add title and labels
-    ax.set_title(f'{stock_symbol} Predicted Stock Returns', color='white')
-    ax.set_xlabel('Date', color='white')
-    ax.set_ylabel('Predicted Returns', color='white')
-
-    # Set the tick parameters to be white
-    ax.tick_params(axis='both', colors='white')
-
-    # Add grid and set its color to mild dark grey
-    ax.grid(True, color='#555555')
-
-    # Add legend with white text
-    ax.legend(loc='upper left', frameon=True, facecolor='#363636', edgecolor='white', framealpha=1, fontsize=12, labelcolor='white')
-
-    # Outline in mild dark grey
-    for spine in ax.spines.values():
-        spine.set_edgecolor('#555555')
-
-    plt.show()
-
+#Main function
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Your custom help text", formatter_class=argparse.RawDescriptionHelpFormatter)
 
+    parser.add_argument('stocks', nargs='+', type=str, help='Required stock symbol(s)')
+    parser.add_argument('--start-date', type=str, required=True, help='Start date for prediction (YYYY-MM-DD), please input no earlier date than 2010-01-01')
+    parser.add_argument('--num-days', type=int, default=5, help='Number of days to predict (choose a number between 1-60) - doesnt display weekends')
+    parser.add_argument('--list-stocks', action='store_true', help='List available stocks and exit')
+
+    args = parser.parse_args()
+
+    if args.list_stocks:
+        for symbol, description in stock_info.items():
+            print(f"{symbol}: {description}")
+        exit(0)
+
+    stock_symbols = args.stocks
+    end_date = args.start_date
+    num_days = args.num_days
+    
+    # Validate selected stocks
+    for stock_symbol in stock_symbols:
+        if stock_symbol not in stock_info:
+            print(f"Invalid stock symbol: {stock_symbol}")
+            exit(1)
+
+    
     if not stock_symbols:
         print("No stock symbols provided. Exiting.")
         exit()
@@ -191,9 +112,8 @@ if __name__ == "__main__":
     except ValueError:
         print("Invalid number of days. Please enter a valid number.")
         exit()
-
-    start_date = "2010-01-01"  # dynamic start date caused problems
-
+    
+    start_date = config['DEFAULT']['start_date']
     predicted_returns_dict = {}
 
     for stock_symbol in stock_symbols:
