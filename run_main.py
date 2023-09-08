@@ -7,7 +7,18 @@ import configparser
 config = configparser.ConfigParser()
 config.read('config.ini')
 
+# Reading visualization settings
+viz_config = config['Visualization']
+
+figure_size = tuple(map(int, viz_config['figure_size'].split(',')))
+title = viz_config['title']
+x_label = viz_config['x_label']
+y_label = viz_config['y_label']
+show_legend = viz_config.getboolean('show_legend')  # Automatically converts the ini string to a Python boolean
+show_grid = viz_config.getboolean('show_grid') # Automatically converts the ini string to a Python boolean
+
 # Requirements
+from datetime import datetime
 import yfinance as yf
 import pandas as pd
 import numpy as np
@@ -92,6 +103,7 @@ if __name__ == "__main__":
     stock_symbols = args.stocks
     end_date = args.start_date
     num_days = args.num_days
+    end_date_str = args.start_date 
     
     # Validate selected stocks
     for stock_symbol in stock_symbols:
@@ -115,6 +127,22 @@ if __name__ == "__main__":
     
     start_date = config['DEFAULT']['start_date']
     predicted_returns_dict = {}
+    
+    #Validate if correct date was inputed
+    
+    try:
+        end_date = datetime.strptime(end_date_str, '%Y-%m-%d')
+    except ValueError:
+        print("Invalid date format. Please enter a date in the format YYYY-MM-DD.")
+        exit(1)
+
+    # Check if the end_date is after 2010-01-01
+    
+    if end_date < datetime(2010, 1, 1):
+        print("Start date for prediction should be no earlier than 2010-01-01.")
+        exit(1)
+        
+    # Stock data fetching
 
     for stock_symbol in stock_symbols:
         stock_data = fetch_stock_data(stock_symbol, start_date, end_date)
@@ -123,14 +151,16 @@ if __name__ == "__main__":
             print(f"Not enough data for stock symbol {stock_symbol}. Skipping.")
             continue
         
+        # Model training and performance comparison
+        
         daily_returns_data = calculate_daily_returns(stock_data)
         
-        window = 20
+        window = int(config['DEFAULT']['window_MA'])
         stock_data = calculate_sma_ema(daily_returns_data, window)
         
         X, y = prepare_data(stock_data, num_days)
 
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, shuffle=False)
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, shuffle=False) # Shuffle false as the order is important
         
         best_model = train_and_evaluate_models(X_train, y_train, X_test, y_test)
         
@@ -146,21 +176,24 @@ if __name__ == "__main__":
             last_week_data[0, -3:] = new_data_point
 
         last_date_in_data = stock_data.index[-1]
-        prediction_dates = pd.date_range(start=last_date_in_data, periods=num_days+1, freq='B')[1:]  # Skip the first date to start from the next business day
+        prediction_dates = pd.date_range(start=last_date_in_data, periods=num_days+1, freq='B')[1:] 
         
         predicted_returns_dict[stock_symbol] = predicted_returns
 
         visualize_predictions(predicted_returns, prediction_dates, stock_symbol)
 
-    plt.figure(figsize=(12, 6))
+    plt.figure(figsize=figure_size)
 
     for stock_symbol, predicted_returns in predicted_returns_dict.items():
         plt.plot(prediction_dates, predicted_returns, label=f'{stock_symbol} Predicted Returns', marker='o')
 
-    plt.title('Predicted Stock Returns')
-    plt.xlabel('Date')
-    plt.ylabel('Predicted Returns')
-    plt.legend()
-    plt.grid(True)
-    plt.tight_layout()
+    plt.title(title)
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
+
+    if show_legend:
+        plt.legend()
+
+    if show_grid:
+        plt.grid(True) 
     plt.show()    
