@@ -10,16 +10,16 @@
     - One can request a list of stocks by running --list-stocks
 - exemplary command is **python run_main.py AAPL V JPM --start-date 2023-01-01 --num-days 10**
     - There are restrictions to the code
-        - Number of days should be between 1-60
+        - Number of days should be between 1-60 (period above 60 days became too slow and it is not usual to predict stocks for longer periods)
         - Start date should be after 2010-01-01 (but this can be modified in config.ini by setting start date earlier)
 - Keep in mind that choosing more stocks (>3) for more days (>20) leads to longer run-time of the script (> 1 minute)
 
 ## Description
 - Create a function to download historical stock data for a given ticker
-- Allow users to input a stock ticker and specify the date range:
-- Preprocess the data (e.g., handling missing values, scaling, or feature engineering) before applying any machine learning algorithms.
+- Allow users to input a stock ticker and specify the date range
+- Preprocess the data (e.g., handling missing values, scaling, or feature engineering) before applying any machine learning algorithms
 - Split the data into training and testing sets
-- Choose a suitable machine learning model for time series forecasting, such as Linear Regression, ARIMA, or LSTM (Long Short-Term Memory) neural networks. Train the model using the training data.
+- Choose a suitable machine learning model for time series forecasting, such as Linear Regression, ARIMA, or LSTM (Long Short-Term Memory) neural networks. Train the model using the training data
 - Evaluate the model performance on the testing set using appropriate metrics, such as Mean Absolute Error (MAE) or Mean Squared Error (MSE)
 - Use the trained model to forecast future stock returns for the specified stock
 - Visualise our predictions
