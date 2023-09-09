@@ -5,7 +5,6 @@
 
 ## Installation
 - Install dependencies using `pip install -r requirements.txt`
-- Set the correct directory, you can choose two
 - Run the script in command line, the script has 3 parameters (stocks, start_date, num_days)
     - One can request a list of stocks by running --list-stocks
 - exemplary command is **python run_main.py AAPL V JPM --start-date 2023-01-01 --num-days 10**
