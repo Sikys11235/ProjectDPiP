@@ -1,6 +1,5 @@
-yfinance
-pandas
-numpy
-sklearn
-matplotlib
-datetime
+pandas==1.5.3
+numpy==1.23.5
+scikit-learn==1.2.2
+matplotlib==3.7.1
+yfinance==0.2.18
