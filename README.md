@@ -1,5 +1,12 @@
-**Steps to take before running this project:**
-- Install requirements.txt
+# Stock Prediction Script
+
+## Table of Contents
+- [Installation](#installation)
+- [Description](#description)
+- [Next Steps](#future-work)
+
+## Installation
+- Install dependencies using `pip install -r requirements.txt`
 - Set the correct directory, you can choose two
 - Run the script in command line, the script has 3 parameters (stocks, start_date, num_days)
     - One can request a list of stocks by running --list-stocks
@@ -9,7 +16,7 @@
         - Start date should be after 2010-01-01 (but this can be modified in config.ini by setting start date earlier)
 - Keep in mind that choosing more stocks (>3) for more days (>20) leads to longer run-time of the script (> 1 minute)
 
-**Description of the project:**
+## Description
 - Create a function to download historical stock data for a given ticker
 - Allow users to input a stock ticker and specify the date range:
 - Preprocess the data (e.g., handling missing values, scaling, or feature engineering) before applying any machine learning algorithms.
@@ -19,7 +26,7 @@
 - Use the trained model to forecast future stock returns for the specified stock
 - Visualise our predictions
 
-**Some next steps that could have been implemented (but a line had to be drawn somewhere)**
+## Next Steps (what is not - but could have been implemented to make the project (even) better)
 - Adding more models, some with hyperparameters (Ridge, Lasso regression with alpha set in the config) - this caused version errors that we were unable to fix in the given time
 - More visualization options (colors of the bar charts, line charts) - but this is not too important
 - Comparison with (if applicable) actual returns of the stocks if past period was chosen
