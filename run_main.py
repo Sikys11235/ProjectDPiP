@@ -1,9 +1,29 @@
-# Importing functions from another Python file
-from data_functions import fetch_stock_data, calculate_daily_returns, calculate_sma_ema, prepare_data, train_and_evaluate_models, visualize_predictions
+# Standard library imports
+from datetime import datetime  # Data validation
+import argparse  #Interface
+import configparser  # Interface
 
-# Importing settings from config.ini
+# Third-party imports
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+from sklearn.model_selection import train_test_split
+import yfinance as yf
+
+# Import models
+from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.metrics import mean_squared_error
+
+
+# Local application imports
+from data_functions import (calculate_daily_returns, calculate_sma_ema,
+                            fetch_stock_data, prepare_data,
+                            train_and_evaluate_models, visualize_predictions)
+
+# connecting run_main.py to config.ini
 import configparser
-
 config = configparser.ConfigParser()
 config.read('config.ini')
 
@@ -17,18 +37,7 @@ y_label = viz_config['y_label']
 show_legend = viz_config.getboolean('show_legend')  # Automatically converts the ini string to a Python boolean
 show_grid = viz_config.getboolean('show_grid') # Automatically converts the ini string to a Python boolean
 
-# Requirements
-from datetime import datetime
-import yfinance as yf
-import pandas as pd
-import numpy as np
-from sklearn.model_selection import train_test_split
-import matplotlib.pyplot as plt
-import argparse
-from configparser import ConfigParser
-
 #Popular stocks
-
 stock_info = {
     'AAPL': 'Apple Inc.',
     'MSFT': 'Microsoft Corporation',
@@ -76,7 +85,6 @@ stock_info = {
 }
 
 #Interface parser
-
 custom_help = """
 Stock Prediction Tool
 
@@ -85,6 +93,7 @@ python run_main.py dummy --list-stocks --start-date dummy
 """
 
 #Main function
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Your custom help text", formatter_class=argparse.RawDescriptionHelpFormatter)
 
@@ -101,16 +110,17 @@ if __name__ == "__main__":
         exit(0)
 
     stock_symbols = args.stocks
-    end_date = args.start_date
     num_days = args.num_days
     end_date_str = args.start_date 
     
     # Validate selected stocks
+    
     for stock_symbol in stock_symbols:
         if stock_symbol not in stock_info:
             print(f"Invalid stock symbol: {stock_symbol}")
             exit(1)
 
+    # Error message if incorrect stock symbol was given
     
     if not stock_symbols:
         print("No stock symbols provided. Exiting.")
@@ -125,10 +135,11 @@ if __name__ == "__main__":
         print("Invalid number of days. Please enter a valid number.")
         exit()
     
-    start_date = config['DEFAULT']['start_date']
+    start_date_str = config['DEFAULT']['start_date']
+    start_date = datetime.strptime(start_date_str, '%Y-%m-%d')
     predicted_returns_dict = {}
     
-    #Validate if correct date was inputed
+    #Validate if correct date was given
     
     try:
         end_date = datetime.strptime(end_date_str, '%Y-%m-%d')
@@ -136,10 +147,10 @@ if __name__ == "__main__":
         print("Invalid date format. Please enter a date in the format YYYY-MM-DD.")
         exit(1)
 
-    # Check if the end_date is after 2010-01-01
+    # Check if the end_date is after config date
     
-    if end_date < datetime(2010, 1, 1):
-        print("Start date for prediction should be no earlier than 2010-01-01.")
+    if end_date < start_date:
+        print(f"Start date for prediction should be no earlier than {start_date}.")
         exit(1)
         
     # Stock data fetching
@@ -154,18 +165,13 @@ if __name__ == "__main__":
         # Model training and performance comparison
         
         daily_returns_data = calculate_daily_returns(stock_data)
-        
         window = int(config['DEFAULT']['window_MA'])
         stock_data = calculate_sma_ema(daily_returns_data, window)
-        
         X, y = prepare_data(stock_data, num_days)
 
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, shuffle=False) # Shuffle false as the order is important
-        
         best_model = train_and_evaluate_models(X_train, y_train, X_test, y_test)
-        
         last_week_data = X_test[-1].reshape(1, -1)
-        
         predicted_returns = []
 
         for i in range(num_days):
@@ -177,9 +183,11 @@ if __name__ == "__main__":
 
         last_date_in_data = stock_data.index[-1]
         prediction_dates = pd.date_range(start=last_date_in_data, periods=num_days+1, freq='B')[1:] 
-        
         predicted_returns_dict[stock_symbol] = predicted_returns
-
+        print(f"Best performing model for the given stock is {best_model}.")
+        
+        # Visualization of predicted returns
+        
         visualize_predictions(predicted_returns, prediction_dates, stock_symbol)
 
     plt.figure(figsize=figure_size)
@@ -195,5 +203,8 @@ if __name__ == "__main__":
         plt.legend()
 
     if show_grid:
-        plt.grid(True) 
+        plt.grid() 
+        
     plt.show()    
+
+#end of code
