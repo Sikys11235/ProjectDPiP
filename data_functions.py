@@ -1,4 +1,3 @@
-
 import yfinance as yf
 import pandas as pd
 import numpy as np
@@ -10,6 +9,13 @@ from sklearn.metrics import mean_squared_error
 import matplotlib.pyplot as plt
 from pandas.tseries.offsets import BDay
 import argparse
+
+# Import models
+from sklearn.linear_model import LinearRegression, Ridge, Lasso
+from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor, AdaBoostRegressor
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.metrics import mean_squared_error
 
 # Function to fetch stock data
 def fetch_stock_data(stock_symbol, start_date, end_date):
@@ -92,10 +98,12 @@ def train_and_evaluate_models(X_train, y_train, X_test, y_test):
     Returns:
         sklearn.model: Best performing model based on MSE.
     """
+    
     models = {
         'Linear Regression': LinearRegression(),
         'Random Forest': RandomForestRegressor(),
-    }
+        'Decision Tree': DecisionTreeRegressor()}
+
     best_model = None
     best_mse = float('inf')
     for name, model in models.items():
