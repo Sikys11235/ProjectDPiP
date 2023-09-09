@@ -18,7 +18,7 @@
 - Allow users to input a stock ticker and specify the date range
 - Preprocess the data (e.g., handling missing values, scaling, or feature engineering) before applying any machine learning algorithms
 - Split the data into training and testing sets
-- Choose a suitable machine learning model for time series forecasting, such as Linear Regression, ARIMA, or LSTM (Long Short-Term Memory) neural networks. Train the model using the training data
+- Choose a suitable machine learning model for time series forecasting, such as Linear Regression, Random Forest and Decision Tree Regression. Train the model using the training data
 - Evaluate the model performance on the testing set using appropriate metrics, such as Mean Absolute Error (MAE) or Mean Squared Error (MSE)
 - Use the trained model to forecast future stock returns for the specified stock
 - Visualise our predictions
