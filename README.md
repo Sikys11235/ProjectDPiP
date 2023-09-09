@@ -1,5 +1,3 @@
-# Stock Prediction Script
-
 ## Table of Contents
 - [Installation](#installation)
 - [Description](#description)
