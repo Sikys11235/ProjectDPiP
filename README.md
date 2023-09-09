@@ -6,8 +6,8 @@
 - exemplary command is **python run_main.py AAPL --start-date 2023-01-01 --num-days 10**
     - There are restrictions to the code
         - Number of days should be between 1-60
-        - Start date should be after 2010-01-01 (but this can be modified in config.ini by setting start date earlier
-Keep in mind that choosing more stocks (>3) for more days (>20) leads to longer run-time of the script (> 1 minute)
+        - Start date should be after 2010-01-01 (but this can be modified in config.ini by setting start date earlier)
+- Keep in mind that choosing more stocks (>3) for more days (>20) leads to longer run-time of the script (> 1 minute)
 
 **Description of the project:**
 - Create a function to download historical stock data for a given ticker
