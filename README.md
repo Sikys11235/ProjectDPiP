@@ -1,23 +1,15 @@
+**Steps to take before running this project:**
+- Install requirements.txt
+- Set the correct directory, you can choose two
+- Run the script in command line, the script has 3 parameters (stocks, start_date, num_days)
+    - One can request a list of stocks by running --list-stocks
+- exemplary command is **python run_main.py AAPL --start-date 2023-01-01 --num-days 10**
+    - There are restrictions to the code
+        - Number of days should be between 1-60
+        - Start date should be after 2010-01-01 (but this can be modified in config.ini by setting start date earlier
+Keep in mind that choosing more stocks (>3) for more days (>20) leads to longer run-time of the script (> 1 minute)
 
-*Read.me will be updated and cleaned during final submission*
-
-
-Current to do's:
-- vytvořit soubor requirements.txt - všechny packages (Vojta)
-- vytvořit soubor config ?
-- přidat možnost aby šlo vybrat více stocks (Vojta)
-- User interface - parse
-- Něco ještě přidat?
-- Proof-read code, občas tam jsou defaultní názvy funkcí, vyhodit některé naše komentáře ##
-
-To start this project, I recommend using the yfinance package, as it simplifies the process of fetching data from Yahoo Finance. Here's an outline of the steps you can follow to build your stock price prediction project:
-
-**1) requirements.txt contains all the packages necessary
-2) run_main.py is the script to be run
-3) other files are making sure run_main works properly
-4) run_main.ipynb was the original file, to be deleted upon final submission - same but does not contain parse interface
-5) DS and Project to be deleted upon submission, automatically created during push request**
-
+**Description of the project:**
 - Create a function to download historical stock data for a given ticker
 - Allow users to input a stock ticker and specify the date range:
 - Preprocess the data (e.g., handling missing values, scaling, or feature engineering) before applying any machine learning algorithms.
@@ -26,3 +18,9 @@ To start this project, I recommend using the yfinance package, as it simplifies 
 - Evaluate the model performance on the testing set using appropriate metrics, such as Mean Absolute Error (MAE) or Mean Squared Error (MSE)
 - Use the trained model to forecast future stock returns for the specified stock
 - Visualise our predictions
+
+**Some next steps that could have been implemented (but a line had to be drawn somewhere)**
+- Adding more models, some with hyperparameters (Ridge, Lasso regression with alpha set in the config) - this caused version errors that we were unable to fix in the given time
+- More visualization options (colors of the bar charts, line charts) - but this is not too important
+- Comparison with (if applicable) actual returns of the stocks if past period was chosen
+- Further data analysis of the predicted returns, f.e. storing them in a separate csv + histogram and segmented by stock to see how they accumulate over time, if there is a trend when increasing the sample size of predictions - this was initially in the ipynb file, but was not segmented by stock and it is not the main part of the scope
